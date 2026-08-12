@@ -3,231 +3,1690 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AuraBot AI - Smart Environment & Autonomous Robot</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<title>AuraBot AI - Smart Environment</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0f172a;color:#e5e7eb}
-.container{max-width:1500px;margin:auto;padding:18px}
-header{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px 22px;background:#111827;border:1px solid #334155;border-radius:16px;margin-bottom:18px}
-.logo{display:flex;align-items:center;gap:12px}.logo i{font-size:34px;color:#38bdf8}.logo h1{margin:0;font-size:24px}.logo span{font-size:14px;color:#94a3b8}
-.header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.btn{border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700;color:#fff;background:#2563eb}.btn:hover{filter:brightness(1.12)}
-.btn-charge{background:#ca8a04}.btn-reset{background:#475569}.btn-export{background:#16a34a}.btn-ai-speak{background:#7c3aed}
-.robot-status{display:flex;align-items:center;gap:8px}.status-indicator{width:10px;height:10px;border-radius:50%;display:inline-block}.online{background:#22c55e;box-shadow:0 0 10px #22c55e}
-.dashboard-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.card{background:#111827;border:1px solid #334155;border-radius:16px;padding:18px}
-.card h2{font-size:18px;margin:0 0 16px;color:#f8fafc}
-.metrics-section{grid-column:1/-1}.metrics-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
-.metric-card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:15px;display:flex;align-items:center;gap:12px;min-height:95px}
-.metric-card .icon{font-size:28px}.metric-info label{display:block;color:#94a3b8;font-size:13px}.value{font-size:25px;font-weight:800}.unit{color:#94a3b8}
-.controls-section{grid-column:1/-1}.controls{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-.control-box{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:14px}
-.control-box h3{margin:0 0 8px;font-size:14px}.toggle-switch{display:inline-block;position:relative;width:52px;height:28px}.toggle-switch input{display:none}.slider{position:absolute;inset:0;background:#475569;border-radius:30px;cursor:pointer}.slider:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}.toggle-switch input:checked+.slider{background:#16a34a}.toggle-switch input:checked+.slider:before{transform:translateX(24px)}
-.status-label{margin-left:8px;font-weight:700}.active{color:#22c55e}.off{color:#ef4444}
-.map-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.room-box{position:relative;min-height:145px;border:2px solid #475569;border-radius:12px;padding:15px;background:#172033;overflow:hidden}.room-box.safe{border-color:#22c55e}.room-name{font-size:17px;font-weight:800}.room-aqi{margin-top:8px;color:#94a3b8}.room-icon{position:absolute;right:18px;bottom:18px;font-size:45px;opacity:.18}.robot-pin{position:absolute;left:14px;bottom:12px;color:#38bdf8;font-weight:700;display:none}.robot-pin.show{display:block}
-.device-grid,.notify-channels{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.device-item,.channel-card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:15px;cursor:pointer}.device-item.on{border-color:#22c55e;background:#12301f}.device-icon,.channel-icon{font-size:28px}.device-info h4,.channel-info h4{margin:8px 0 4px}.protocol-tag,.channel-status{font-size:12px;color:#94a3b8}.status-text{float:right;font-weight:800}
-.chart-container{height:330px}.logs-section{grid-column:1/-1}.log-console{height:210px;overflow:auto;background:#020617;border-radius:10px;padding:12px;font-family:Consolas,monospace;font-size:13px}.log-item{margin:0 0 7px}.info{color:#93c5fd}.warn{color:#fde047}.danger{color:#f87171}
-.emergency-banner{position:sticky;top:8px;z-index:20;background:#991b1b;border:2px solid #ef4444;color:white;padding:12px 18px;border-radius:12px;margin-bottom:12px;animation:pulse 1s infinite alternate}.hidden{display:none}.banner-content{display:flex;align-items:center;justify-content:center;gap:14px}.btn-dismiss{background:#fff;color:#991b1b;border:0;border-radius:8px;padding:8px 12px;font-weight:800;cursor:pointer}
-.battery-low{border-color:#eab308}.battery-critical{border-color:#ef4444;animation:pulse 1s infinite alternate}.emergency-alarm{border-color:#ef4444;animation:pulse .6s infinite alternate}.text-safe{color:#22c55e}.text-danger{color:#ef4444}
-@keyframes pulse{from{box-shadow:0 0 3px rgba(239,68,68,.25)}to{box-shadow:0 0 20px rgba(239,68,68,.8)}}
-@media(max-width:1100px){.metrics-grid{grid-template-columns:repeat(3,1fr)}} 
-@media(max-width:800px){.dashboard-grid{grid-template-columns:1fr}.metrics-section,.controls-section,.logs-section{grid-column:auto}.metrics-grid{grid-template-columns:repeat(2,1fr)}.device-grid,.notify-channels{grid-template-columns:1fr}.map-grid{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}}
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+.container {
+    max-width: 1500px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* HEADER */
+header {
+    background: #111827;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-icon {
+    font-size: 42px;
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 26px;
+}
+
+.logo p {
+    margin: 5px 0 0;
+    color: #94a3b8;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* BUTTON */
+button {
+    border: none;
+    border-radius: 9px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    background: #2563eb;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+.btn-green {
+    background: #16a34a;
+}
+
+.btn-yellow {
+    background: #ca8a04;
+}
+
+.btn-red {
+    background: #dc2626;
+}
+
+.btn-purple {
+    background: #7c3aed;
+}
+
+.btn-gray {
+    background: #475569;
+}
+
+/* GRID */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+.card {
+    background: #111827;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #f8fafc;
+}
+
+/* SENSOR */
+.sensor-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.sensor {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+}
+
+.sensor-icon {
+    font-size: 30px;
+}
+
+.sensor-name {
+    color: #94a3b8;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.sensor-value {
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* ROBOT */
+.robot-panel {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.robot-box {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.robot-value {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 8px 0;
+}
+
+.online {
+    color: #22c55e;
+}
+
+.offline {
+    color: #ef4444;
+}
+
+.warning {
+    color: #facc15;
+}
+
+/* HEATMAP */
+.rooms {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.room {
+    min-height: 150px;
+    padding: 18px;
+    border-radius: 14px;
+    background: #172033;
+    border: 2px solid #22c55e;
+    position: relative;
+}
+
+.room.warning-room {
+    border-color: #facc15;
+}
+
+.room.danger-room {
+    border-color: #ef4444;
+}
+
+.room h3 {
+    margin-top: 0;
+}
+
+.robot-position {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    font-weight: bold;
+    color: #38bdf8;
+}
+
+/* SMART HOME */
+.devices {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.device {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 18px;
+    cursor: pointer;
+}
+
+.device.active {
+    border-color: #22c55e;
+    background: #12301f;
+}
+
+.device-icon {
+    font-size: 30px;
+}
+
+.device-status {
+    float: right;
+    font-weight: bold;
+}
+
+/* AI */
+.ai-box {
+    background: #172033;
+    border-radius: 12px;
+    padding: 18px;
+    line-height: 1.6;
+}
+
+/* LOG */
+.log {
+    height: 220px;
+    overflow-y: auto;
+    background: #020617;
+    border-radius: 10px;
+    padding: 15px;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+}
+
+.log-line {
+    margin-bottom: 7px;
+}
+
+.log-info {
+    color: #93c5fd;
+}
+
+.log-warning {
+    color: #fde047;
+}
+
+.log-danger {
+    color: #f87171;
+}
+
+/* EMERGENCY */
+.emergency {
+    display: none;
+    background: #991b1b;
+    border: 2px solid #ef4444;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    animation: blink 0.8s infinite alternate;
+}
+
+@keyframes blink {
+    from {
+        box-shadow: 0 0 5px #ef4444;
+    }
+    to {
+        box-shadow: 0 0 25px #ef4444;
+    }
+}
+
+/* RESPONSIVE */
+@media(max-width:1100px) {
+    .sensor-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media(max-width:800px) {
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+
+    .sensor-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .robot-panel,
+    .devices,
+    .rooms {
+        grid-template-columns: 1fr;
+    }
+}
 </style>
 </head>
+
 <body>
 
-<div id="emergency-banner" class="emergency-banner hidden">
-  <div class="banner-content">
-    <i class="fa-solid fa-triangle-exclamation fa-beat"></i>
-    <span id="emergency-text">CẢNH BÁO NGUY HẠI KHẨN CẤP!</span>
-    <button onclick="dismissEmergency()" class="btn-dismiss">ĐÃ XỬ LÝ / TẮT CÒI</button>
-  </div>
-</div>
-
 <div class="container">
+
+<!-- HEADER -->
 <header>
-  <div class="logo">
-    <i class="fa-solid fa-robot"></i>
-    <h1>AuraBot <span>AI Smart Environment v5.0</span></h1>
-  </div>
-  <div class="header-right">
-    <button class="btn btn-export" id="btn-export-excel"><i class="fa-solid fa-file-excel"></i> Xuất Báo Cáo</button>
-    <button class="btn btn-ai-speak" id="btn-speak-ai"><i class="fa-solid fa-volume-high"></i> Trợ Lý AI Nói</button>
-    <div class="robot-status"><span class="status-indicator online"></span><span id="robot-state-text">Đang đo & quét</span></div>
-  </div>
+
+    <div class="logo">
+        <div class="logo-icon">🤖</div>
+
+        <div>
+            <h1>AuraBot AI</h1>
+            <p>Smart Environment & Autonomous Robot</p>
+        </div>
+    </div>
+
+    <div class="header-buttons">
+
+        <button class="btn-green" onclick="exportReport()">
+            📊 Xuất báo cáo
+        </button>
+
+        <button class="btn-purple" onclick="speakAI()">
+            🔊 Trợ lý AI
+        </button>
+
+    </div>
+
 </header>
 
-<main class="dashboard-grid">
 
-<section class="card controls-section">
-<h2><i class="fa-solid fa-gamepad"></i> Điều Khiển Robot</h2>
-<div class="controls">
-  <div class="control-box">
-    <h3>BẬT/TẮT ROBOT</h3>
-    <label class="toggle-switch"><input type="checkbox" id="power-toggle" checked onchange="toggleRobotPower(this)"><span class="slider"></span></label>
-    <span id="power-status-label" class="status-label active">ON (Hoạt động)</span>
-  </div>
-  <div class="control-box">
-    <h3>PIN ROBOT</h3>
-    <div><b><span id="val-battery">100</span>%</b> — <span id="battery-status-sub">Đang xả pin</span></div>
-  </div>
-  <div class="control-box">
-    <h3>SẠC</h3>
-    <button id="btn-manual-charge" class="btn btn-charge" onclick="toggleManualCharging()"><i class="fa-solid fa-charging-station"></i> <span id="btn-charge-text">Gọi Robot Về Sạc</span></button>
-    <button class="btn btn-reset" onclick="resetBattery()"><i class="fa-solid fa-battery-full"></i> Reset Pin</button>
-  </div>
+<!-- EMERGENCY -->
+<div id="emergency" class="emergency">
+
+    🚨 CẢNH BÁO KHẨN CẤP
+
+    <div id="emergencyText">
+        Phát hiện môi trường nguy hiểm!
+    </div>
+
+    <br>
+
+    <button class="btn-gray" onclick="clearEmergency()">
+        ĐÃ XỬ LÝ
+    </button>
+
 </div>
-</section>
 
-<section class="card metrics-section">
-<h2><i class="fa-solid fa-gauge-high"></i> Thông Số Môi Trường Real-time</h2>
-<div class="metrics-grid">
-  <div class="metric-card" id="card-temp"><i class="fa-solid fa-temperature-half icon temp"></i><div class="metric-info"><label>Nhiệt độ</label><span class="value" id="val-temp">--</span> <span class="unit">°C</span></div></div>
-  <div class="metric-card"><i class="fa-solid fa-droplet icon humidity"></i><div class="metric-info"><label>Độ ẩm</label><span class="value" id="val-humidity">--</span> <span class="unit">%</span></div></div>
-  <div class="metric-card"><i class="fa-solid fa-smog icon pm25"></i><div class="metric-info"><label>PM2.5</label><span class="value" id="val-pm25">--</span> <span class="unit">µg/m³</span></div></div>
-  <div class="metric-card"><i class="fa-solid fa-wind icon co2"></i><div class="metric-info"><label>CO₂</label><span class="value" id="val-co2">--</span> <span class="unit">ppm</span></div></div>
-  <div class="metric-card" id="card-gas"><i class="fa-solid fa-fire-flame-curved icon"></i><div class="metric-info"><label>Gas / Khói</label><span class="value" id="val-gas">--</span> <span class="unit">PPM</span><small id="gas-status-sub" class="text-safe">An Toàn</small></div></div>
-  <div class="metric-card" id="card-battery"><i class="fa-solid fa-battery-three-quarters icon"></i><div class="metric-info"><label>Pin Robot</label><span class="value" id="val-battery-card">100</span> <span class="unit">%</span></div></div>
+
+<div class="dashboard">
+
+
+<!-- ROBOT CONTROL -->
+<section class="card full">
+
+<h2>🤖 Điều khiển Robot</h2>
+
+<div class="robot-panel">
+
+    <div class="robot-box">
+
+        <b>Trạng thái</b>
+
+        <div id="robotStatus" class="robot-value online">
+            ĐANG HOẠT ĐỘNG
+        </div>
+
+        <button id="powerButton"
+                onclick="toggleRobot()">
+
+            ⏻ Tắt Robot
+
+        </button>
+
+    </div>
+
+
+    <div class="robot-box">
+
+        <b>Pin Robot</b>
+
+        <div class="robot-value">
+
+            <span id="battery">
+                100
+            </span> %
+
+        </div>
+
+        <div id="batteryStatus">
+            Đang hoạt động
+        </div>
+
+    </div>
+
+
+    <div class="robot-box">
+
+        <b>Trạm sạc</b>
+
+        <div class="robot-value">
+            🔋
+        </div>
+
+        <button class="btn-yellow"
+                onclick="toggleCharging()">
+
+            Gọi Robot về sạc
+
+        </button>
+
+        <button class="btn-gray"
+                onclick="resetBattery()">
+
+            Reset Pin
+
+        </button>
+
+    </div>
+
 </div>
+
 </section>
 
-<section class="card heatmap-section">
-<h2><i class="fa-solid fa-map-location-dot"></i> Heatmap Môi Trường & Vị Trí Robot</h2>
-<div class="map-grid">
-  <div class="room-box safe" id="room-living"><div class="room-name">Phòng Khách</div><div class="room-aqi">AQI: <span id="aqi-living">Tốt</span></div><i class="fa-solid fa-couch room-icon"></i><span class="robot-pin show" id="pin-living"><i class="fa-solid fa-robot"></i> Robot ở đây</span></div>
-  <div class="room-box" id="room-bed"><div class="room-name">Phòng Ngủ</div><div class="room-aqi">AQI: <span id="aqi-bed">Tốt</span></div><i class="fa-solid fa-bed room-icon"></i><span class="robot-pin" id="pin-bed"><i class="fa-solid fa-robot"></i> Robot ở đây</span></div>
-  <div class="room-box" id="room-kitchen"><div class="room-name">Phòng Bếp</div><div class="room-aqi">AQI: <span id="aqi-kitchen">Cảnh báo</span></div><i class="fa-solid fa-utensils room-icon"></i><span class="robot-pin" id="pin-kitchen"><i class="fa-solid fa-robot"></i> Robot ở đây</span></div>
-  <div class="room-box" id="room-office"><div class="room-name">Phòng Làm Việc</div><div class="room-aqi">AQI: <span id="aqi-office">Tốt</span></div><i class="fa-solid fa-laptop-code room-icon"></i><span class="robot-pin" id="pin-office"><i class="fa-solid fa-robot"></i> Robot ở đây</span></div>
+
+<!-- SENSOR -->
+<section class="card full">
+
+<h2>🌡️ Giám sát môi trường Real-time</h2>
+
+<div class="sensor-grid">
+
+    <div class="sensor">
+
+        <div class="sensor-icon">
+            🌡️
+        </div>
+
+        <div class="sensor-name">
+            Nhiệt độ
+        </div>
+
+        <div class="sensor-value">
+            <span id="temperature">--</span> °C
+        </div>
+
+    </div>
+
+
+    <div class="sensor">
+
+        <div class="sensor-icon">
+            💧
+        </div>
+
+        <div class="sensor-name">
+            Độ ẩm
+        </div>
+
+        <div class="sensor-value">
+            <span id="humidity">--</span> %
+        </div>
+
+    </div>
+
+
+    <div class="sensor">
+
+        <div class="sensor-icon">
+            🌫️
+        </div>
+
+        <div class="sensor-name">
+            PM2.5
+        </div>
+
+        <div class="sensor-value">
+            <span id="pm25">--</span>
+        </div>
+
+    </div>
+
+
+    <div class="sensor">
+
+        <div class="sensor-icon">
+            💨
+        </div>
+
+        <div class="sensor-name">
+            CO₂
+        </div>
+
+        <div class="sensor-value">
+            <span id="co2">--</span>
+        </div>
+
+    </div>
+
+
+    <div class="sensor">
+
+        <div class="sensor-icon">
+            🔥
+        </div>
+
+        <div class="sensor-name">
+            Gas / Khói
+        </div>
+
+        <div class="sensor-value">
+            <span id="gas">--</span>
+        </div>
+
+    </div>
+
 </div>
+
 </section>
 
-<section class="card smarthome-section">
-<h2><i class="fa-solid fa-house-signal"></i> Tự Động Hóa Smart Home</h2>
-<div class="device-grid">
-  <div class="device-item" id="device-air-purifier" onclick="toggleDevice(this,'Máy lọc không khí')"><i class="fa-solid fa-fan device-icon"></i><div class="device-info"><h4>Máy Lọc Không Khí</h4><span class="protocol-tag">MQTT / Tuya</span><span class="status-text">OFF</span></div></div>
-  <div class="device-item" id="device-ac" onclick="toggleDevice(this,'Điều hòa')"><i class="fa-solid fa-snowflake device-icon"></i><div class="device-info"><h4>Điều Hòa Cool/Dry</h4><span class="protocol-tag">Home Assistant</span><span class="status-text">OFF</span></div></div>
-  <div class="device-item" id="device-fan" onclick="toggleDevice(this,'Quạt thông gió')"><i class="fa-solid fa-wind device-icon"></i><div class="device-info"><h4>Quạt Thông Gió</h4><span class="protocol-tag">Zigbee / Tuya</span><span class="status-text">OFF</span></div></div>
+
+<!-- HEATMAP -->
+<section class="card">
+
+<h2>🗺️ Heatmap môi trường</h2>
+
+<div class="rooms">
+
+    <div id="living" class="room">
+
+        <h3>🛋️ Phòng khách</h3>
+
+        <div>
+            AQI:
+            <strong id="aqiLiving">
+                Tốt
+            </strong>
+        </div>
+
+        <div id="robotLiving"
+             class="robot-position">
+
+            🤖 Robot ở đây
+
+        </div>
+
+    </div>
+
+
+    <div id="bedroom" class="room">
+
+        <h3>🛏️ Phòng ngủ</h3>
+
+        <div>
+            AQI:
+            <strong id="aqiBedroom">
+                Tốt
+            </strong>
+        </div>
+
+        <div id="robotBedroom"
+             class="robot-position"
+             style="display:none">
+
+            🤖 Robot ở đây
+
+        </div>
+
+    </div>
+
+
+    <div id="kitchen" class="room warning-room">
+
+        <h3>🍳 Phòng bếp</h3>
+
+        <div>
+            AQI:
+            <strong id="aqiKitchen">
+                Cảnh báo
+            </strong>
+        </div>
+
+        <div id="robotKitchen"
+             class="robot-position"
+             style="display:none">
+
+            🤖 Robot ở đây
+
+        </div>
+
+    </div>
+
+
+    <div id="office" class="room">
+
+        <h3>💻 Phòng làm việc</h3>
+
+        <div>
+            AQI:
+            <strong id="aqiOffice">
+                Tốt
+            </strong>
+        </div>
+
+        <div id="robotOffice"
+             class="robot-position"
+             style="display:none">
+
+            🤖 Robot ở đây
+
+        </div>
+
+    </div>
+
 </div>
+
 </section>
 
-<section class="card notify-section">
-<h2><i class="fa-solid fa-paper-plane"></i> Kênh Cảnh Báo</h2>
-<div class="notify-channels">
-  <div class="channel-card active"><i class="fa-brands fa-telegram channel-icon"></i><div class="channel-info"><h4>Telegram Bot</h4><span class="channel-status">Giao diện sẵn sàng</span></div></div>
-  <div class="channel-card active"><i class="fa-solid fa-message channel-icon"></i><div class="channel-info"><h4>Zalo OA</h4><span class="channel-status">Giao diện sẵn sàng</span></div></div>
-  <div class="channel-card active"><i class="fa-solid fa-envelope channel-icon"></i><div class="channel-info"><h4>Email Alert</h4><span class="channel-status">Giao diện sẵn sàng</span></div></div>
+
+<!-- SMART HOME -->
+<section class="card">
+
+<h2>🏠 Smart Home</h2>
+
+<div class="devices">
+
+    <div class="device"
+         onclick="toggleDevice(this)">
+
+        <div class="device-icon">
+            🌬️
+        </div>
+
+        <h3>
+            Máy lọc không khí
+        </h3>
+
+        <span class="device-status">
+            OFF
+        </span>
+
+        <small>
+            MQTT / Tuya
+        </small>
+
+    </div>
+
+
+    <div class="device"
+         onclick="toggleDevice(this)">
+
+        <div class="device-icon">
+            ❄️
+        </div>
+
+        <h3>
+            Điều hòa
+        </h3>
+
+        <span class="device-status">
+            OFF
+        </span>
+
+        <small>
+            Home Assistant
+        </small>
+
+    </div>
+
+
+    <div class="device"
+         onclick="toggleDevice(this)">
+
+        <div class="device-icon">
+            💨
+        </div>
+
+        <h3>
+            Quạt thông gió
+        </h3>
+
+        <span class="device-status">
+            OFF
+        </span>
+
+        <small>
+            Zigbee / Tuya
+        </small>
+
+    </div>
+
 </div>
+
 </section>
 
-<section class="card chart-section">
-<h2><i class="fa-solid fa-chart-line"></i> Biểu Đồ Lịch Sử Chỉ Số Môi Trường</h2>
-<div class="chart-container"><canvas id="envChart"></canvas></div>
-</section>
 
-<section class="card logs-section">
-<h2><i class="fa-solid fa-terminal"></i> Nhật Ký Hoạt Động & Cảnh Báo</h2>
-<div class="log-console" id="system-logs"></div>
-</section>
+<!-- AI -->
+<section class="card">
 
-</main>
+<h2>🧠 AI phân tích môi trường</h2>
+
+<div class="ai-box">
+
+    <strong>Nhận xét của AuraBot:</strong>
+
+    <p id="aiMessage">
+        Đang phân tích dữ liệu cảm biến...
+    </p>
+
+    <button class="btn-purple"
+            onclick="analyzeEnvironment()">
+
+        🤖 Phân tích lại
+
+    </button>
+
 </div>
+
+</section>
+
+
+<!-- ALERT -->
+<section class="card">
+
+<h2>🚨 Hệ thống cảnh báo</h2>
+
+<div class="ai-box">
+
+    <p>
+        📱 Telegram:
+        <strong class="online">
+            Sẵn sàng
+        </strong>
+    </p>
+
+    <p>
+        💬 Zalo:
+        <strong class="online">
+            Sẵn sàng
+        </strong>
+    </p>
+
+    <p>
+        📧 Email:
+        <strong class="online">
+            Sẵn sàng
+        </strong>
+    </p>
+
+    <p>
+        🔥 Cảnh báo Gas/Cháy:
+        <strong id="fireStatus">
+            An toàn
+        </strong>
+    </p>
+
+</div>
+
+</section>
+
+
+<!-- CHART -->
+<section class="card full">
+
+<h2>📈 Lịch sử dữ liệu môi trường</h2>
+
+<canvas id="chart"
+        height="100">
+</canvas>
+
+</section>
+
+
+<!-- LOG -->
+<section class="card full">
+
+<h2>📝 Nhật ký hệ thống</h2>
+
+<div id="log"
+     class="log">
+
+</div>
+
+</section>
+
+</div>
+
+</div>
+
 
 <script>
-let isRobotPowerOn=true,isManualCharging=false,isAutoCharging=false,robotBattery=100,emergencyActive=false;
-const ctx=document.getElementById('envChart').getContext('2d');
-const envChart=new Chart(ctx,{type:'line',data:{labels:[],datasets:[
-{label:'Nhiệt độ (°C)',data:[],tension:.3},
-{label:'Gas/Khói (PPM)',data:[],tension:.3},
-{label:'PM2.5 (µg/m³)',data:[],tension:.3},
-{label:'CO₂ (ppm)',data:[],tension:.3}
-]},options:{responsive:true,maintainAspectRatio:false,animation:false}});
 
-function addLog(message,type='info'){
- const logBox=document.getElementById('system-logs');
- const p=document.createElement('p'); p.className='log-item '+type;
- p.textContent='['+new Date().toLocaleTimeString()+'] '+message; logBox.prepend(p);
+/* =====================================================
+   AURABOT AI - MAIN SYSTEM
+===================================================== */
+
+let robotOn = true;
+
+let charging = false;
+
+let battery = 100;
+
+let emergency = false;
+
+let robotRoom = "living";
+
+
+/* SENSOR DATA */
+
+let temperature = 28;
+
+let humidity = 65;
+
+let pm25 = 25;
+
+let co2 = 600;
+
+let gas = 120;
+
+
+/* =====================================================
+   LOG SYSTEM
+===================================================== */
+
+function addLog(message, type = "log-info") {
+
+    const log = document.getElementById("log");
+
+    const line = document.createElement("div");
+
+    line.className = "log-line " + type;
+
+    const time =
+        new Date().toLocaleTimeString();
+
+    line.textContent =
+        "[" + time + "] " + message;
+
+    log.prepend(line);
+
 }
-function toggleRobotPower(cb){
- isRobotPowerOn=cb.checked;
- const label=document.getElementById('power-status-label'), state=document.getElementById('robot-state-text');
- if(isRobotPowerOn){label.textContent='ON (Hoạt động)';label.className='status-label active';state.textContent='Đang đo & quét';addLog('🟢 [POWER] Robot đã BẬT.')}
- else{label.textContent='OFF (Tắt nguồn)';label.className='status-label off';state.textContent='Đã Tắt (Off)';addLog('🔴 [POWER] Robot đã TẮT.','warn')}
+
+
+/* =====================================================
+   ROBOT POWER
+===================================================== */
+
+function toggleRobot() {
+
+    robotOn = !robotOn;
+
+    const status =
+        document.getElementById("robotStatus");
+
+    const button =
+        document.getElementById("powerButton");
+
+    if (robotOn) {
+
+        status.textContent =
+            "ĐANG HOẠT ĐỘNG";
+
+        status.className =
+            "robot-value online";
+
+        button.textContent =
+            "⏻ Tắt Robot";
+
+        addLog(
+            "Robot đã được BẬT."
+        );
+
+    } else {
+
+        status.textContent =
+            "ĐÃ TẮT";
+
+        status.className =
+            "robot-value offline";
+
+        button.textContent =
+            "⏻ Bật Robot";
+
+        addLog(
+            "Robot đã được TẮT.",
+            "log-warning"
+        );
+
+    }
+
 }
-function toggleManualCharging(){
- if(!isRobotPowerOn){alert('Vui lòng BẬT nguồn Robot trước!');return}
- isManualCharging=!isManualCharging;updateChargingUI();
+
+
+/* =====================================================
+   CHARGING
+===================================================== */
+
+function toggleCharging() {
+
+    if (!robotOn) {
+
+        alert(
+            "Vui lòng bật Robot trước!"
+        );
+
+        return;
+    }
+
+    charging = !charging;
+
+    if (charging) {
+
+        addLog(
+            "Robot đang trở về trạm sạc."
+        );
+
+    } else {
+
+        addLog(
+            "Robot rời trạm sạc."
+        );
+
+    }
+
 }
-function updateChargingUI(){
- const btn=document.getElementById('btn-manual-charge'),txt=document.getElementById('btn-charge-text'),state=document.getElementById('robot-state-text');
- if(isManualCharging||isAutoCharging){btn.classList.add('active');txt.textContent='Dừng Sạc & Rời Dock';state.textContent='🔋 ĐANG Ở TRẠM SẠC'}
- else{btn.classList.remove('active');txt.textContent='Gọi Robot Về Sạc';state.textContent='Đang đo & quét'}
+
+
+/* =====================================================
+   RESET BATTERY
+===================================================== */
+
+function resetBattery() {
+
+    battery = 100;
+
+    updateBattery();
+
+    addLog(
+        "Pin Robot được reset về 100%."
+    );
+
 }
-function resetBattery(){robotBattery=100;updateBatteryUI();addLog('🔋 [PIN] Đặt lại pin về 100%.')}
-function updateBatteryUI(){
- document.getElementById('val-battery').textContent=robotBattery;
- document.getElementById('val-battery-card').textContent=robotBattery;
+
+
+/* =====================================================
+   BATTERY
+===================================================== */
+
+function updateBattery() {
+
+    document.getElementById(
+        "battery"
+    ).textContent = battery;
+
+    if (battery <= 15) {
+
+        document.getElementById(
+            "batteryStatus"
+        ).textContent =
+            "⚠️ Pin rất thấp - tự động về sạc";
+
+    }
+
+    else if (charging) {
+
+        document.getElementById(
+            "batteryStatus"
+        ).textContent =
+            "🔋 Đang sạc";
+
+    }
+
+    else {
+
+        document.getElementById(
+            "batteryStatus"
+        ).textContent =
+            "Đang hoạt động";
+
+    }
+
 }
-function processBatteryLogic(){
- const card=document.getElementById('card-battery'),sub=document.getElementById('battery-status-sub');
- if(isManualCharging||isAutoCharging){robotBattery+=10;sub.textContent='Đang sạc ⚡';if(robotBattery>=100){robotBattery=100;isAutoCharging=false;isManualCharging=false;updateChargingUI();addLog('🟢 [AUTO-DOCKING] Pin đầy 100%.')}}
- else if(isRobotPowerOn){robotBattery-=Math.floor(Math.random()*4)+2;if(robotBattery<0)robotBattery=0;sub.textContent='Đang xả pin'}
- updateBatteryUI();
- if(robotBattery<=15&&!isAutoCharging&&!isManualCharging&&isRobotPowerOn){card.className='metric-card battery-critical';isAutoCharging=true;updateChargingUI();addLog('🚨 [AUTO-DOCKING] Pin nguy kịch, robot tự về sạc!','danger')}
- else if(robotBattery<=30){card.className='metric-card battery-low'} else card.className='metric-card';
+
+
+/* =====================================================
+   BATTERY SIMULATION
+===================================================== */
+
+function updateBatteryLogic() {
+
+    if (!robotOn)
+        return;
+
+
+    if (charging) {
+
+        battery += 5;
+
+        if (battery >= 100) {
+
+            battery = 100;
+
+            charging = false;
+
+            addLog(
+                "Pin đã đầy 100%. Robot rời trạm sạc."
+            );
+
+        }
+
+    }
+
+    else {
+
+        battery -= 1;
+
+        if (battery <= 15) {
+
+            battery = 15;
+
+            if (!charging) {
+
+                charging = true;
+
+                addLog(
+                    "🚨 Pin thấp! Robot tự động về trạm sạc.",
+                    "log-warning"
+                );
+
+            }
+
+        }
+
+    }
+
+    updateBattery();
+
 }
-function processGasAndFireSafety(gas,temp){
- const card=document.getElementById('card-gas'),sub=document.getElementById('gas-status-sub'),banner=document.getElementById('emergency-banner');
- const gasEmergency=gas>400,fireEmergency=temp>50;
- if((gasEmergency||fireEmergency)&&!emergencyActive){emergencyActive=true;card.classList.add('emergency-alarm');banner.classList.remove('hidden');let cause=gasEmergency?'RÒ RỈ KHÍ GAS ('+gas+' PPM)':'NGUY CƠ CHÁY ('+temp+'°C)';document.getElementById('emergency-text').textContent='🚨 CẢNH BÁO: '+cause+'!';sub.textContent='⚠️ NGUY HIỂM!';sub.className='text-danger';addLog('🚨 [CẢNH BÁO] '+cause,'danger')}
- else if(!gasEmergency&&!fireEmergency&&emergencyActive)dismissEmergency();
+
+
+/* =====================================================
+   SENSOR SIMULATION
+===================================================== */
+
+function updateSensors() {
+
+    if (!robotOn)
+        return;
+
+
+    temperature =
+        (25 + Math.random() * 12).toFixed(1);
+
+    humidity =
+        (45 + Math.random() * 35).toFixed(1);
+
+    pm25 =
+        Math.floor(
+            15 + Math.random() * 70
+        );
+
+    co2 =
+        Math.floor(
+            400 + Math.random() * 1000
+        );
+
+    gas =
+        Math.floor(
+            80 + Math.random() * 250
+        );
+
+
+    /*
+       Thỉnh thoảng mô phỏng
+       tình huống nguy hiểm
+    */
+
+    if (Math.random() < 0.05) {
+
+        gas =
+            Math.floor(
+                420 + Math.random() * 150
+            );
+
+    }
+
+
+    if (Math.random() < 0.03) {
+
+        temperature =
+            (51 + Math.random() * 8).toFixed(1);
+
+    }
+
+
+    document.getElementById(
+        "temperature"
+    ).textContent = temperature;
+
+    document.getElementById(
+        "humidity"
+    ).textContent = humidity;
+
+    document.getElementById(
+        "pm25"
+    ).textContent = pm25;
+
+    document.getElementById(
+        "co2"
+    ).textContent = co2;
+
+    document.getElementById(
+        "gas"
+    ).textContent = gas;
+
+
+    analyzeEnvironment();
+
+    checkEmergency();
+
+    updateHeatmap();
+
+    moveRobot();
+
 }
-function dismissEmergency(){emergencyActive=false;document.getElementById('emergency-banner').classList.add('hidden');document.getElementById('card-gas').classList.remove('emergency-alarm');const s=document.getElementById('gas-status-sub');s.textContent='An Toàn';s.className='text-safe';addLog('🟢 [AN TOÀN] Cảnh báo đã được tắt.')}
-function toggleDevice(el,name){el.classList.toggle('on');const status=el.querySelector('.status-text');const on=el.classList.contains('on');status.textContent=on?'ON':'OFF';addLog((on?'🟢 ':'⚪ ')+'[SMART HOME] '+name+': '+(on?'BẬT':'TẮT'))}
-function updateHeatmap(pm25,co2,gas){
- const danger=pm25>55||co2>1000||gas>400;
- const kitchen=document.getElementById('room-kitchen'),aqi=document.getElementById('aqi-kitchen');
- kitchen.classList.toggle('safe',!danger);aqi.textContent=danger?'Cảnh báo':'Tốt';
+
+
+/* =====================================================
+   ENVIRONMENT ANALYSIS
+===================================================== */
+
+function analyzeEnvironment() {
+
+    const ai =
+        document.getElementById(
+            "aiMessage"
+        );
+
+
+    let message =
+        "Môi trường hiện đang ở mức tương đối tốt.";
+
+
+    if (gas > 400) {
+
+        message =
+            "⚠️ Phát hiện nồng độ Gas/khói cao. Cần kiểm tra khu vực và tăng thông gió.";
+
+    }
+
+    else if (temperature > 50) {
+
+        message =
+            "🔥 Nhiệt độ rất cao. Có nguy cơ cháy, cần kiểm tra ngay.";
+
+    }
+
+    else if (pm25 > 55) {
+
+        message =
+            "🌫️ PM2.5 đang cao. Khuyến nghị bật máy lọc không khí.";
+
+    }
+
+    else if (co2 > 1000) {
+
+        message =
+            "💨 CO₂ cao. Khuyến nghị bật quạt thông gió.";
+
+    }
+
+    else if (temperature > 32) {
+
+        message =
+            "🌡️ Nhiệt độ khá cao. Có thể bật điều hòa.";
+
+    }
+
+
+    ai.textContent = message;
+
 }
-function moveRobot(room){
- ['living','bed','kitchen','office'].forEach(r=>document.getElementById('pin-'+r).classList.remove('show'));
- document.getElementById('pin-'+room).classList.add('show');
+
+
+/* =====================================================
+   EMERGENCY
+===================================================== */
+
+function checkEmergency() {
+
+    const box =
+        document.getElementById(
+            "emergency"
+        );
+
+    const text =
+        document.getElementById(
+            "emergencyText"
+        );
+
+    const fireStatus =
+        document.getElementById(
+            "fireStatus"
+        );
+
+
+    if (
+        gas > 400 ||
+        temperature > 50
+    ) {
+
+        box.style.display =
+            "block";
+
+        fireStatus.textContent =
+            "⚠️ NGUY HIỂM";
+
+        fireStatus.className =
+            "offline";
+
+
+        if (!emergency) {
+
+            emergency = true;
+
+            let reason = "";
+
+            if (gas > 400) {
+
+                reason +=
+                    "Gas/khói cao (" +
+                    gas +
+                    " PPM). ";
+
+            }
+
+            if (temperature > 50) {
+
+                reason +=
+                    "Nhiệt độ cao (" +
+                    temperature +
+                    "°C).";
+
+            }
+
+
+            text.textContent =
+                reason;
+
+
+            addLog(
+                "🚨 CẢNH BÁO: " +
+                reason,
+                "log-danger"
+            );
+
+        }
+
+    }
+
+    else {
+
+        if (emergency) {
+
+            emergency = false;
+
+            addLog(
+                "Môi trường đã trở lại an toàn."
+            );
+
+        }
+
+        box.style.display =
+            "none";
+
+        fireStatus.textContent =
+            "An toàn";
+
+        fireStatus.className =
+            "online";
+
+    }
+
 }
-function runSystemLoop(){
- if(!isRobotPowerOn)return;
- const temp=parseFloat((Math.random()*10+25).toFixed(1));
- const humidity=parseFloat((Math.random()*35+45).toFixed(1));
- const pm25=parseFloat((Math.random()*85+15).toFixed(1));
- const co2=Math.floor(Math.random()*800+400);
- let gas=Math.floor(Math.random()*200)+80;if(Math.random()<.1)gas=Math.floor(Math.random()*300)+420;
- document.getElementById('val-temp').textContent=temp;
- document.getElementById('val-humidity').textContent=humidity;
- document.getElementById('val-pm25').textContent=pm25;
- document.getElementById('val-co2').textContent=co2;
- document.getElementById('val-gas').textContent=gas;
- processBatteryLogic();processGasAndFireSafety(gas,temp);updateHeatmap(pm25,co2,gas);
- const now=new Date().toLocaleTimeString();
- if(envChart.data.labels.length>10){envChart.data.labels.shift();envChart.data.datasets.forEach(d=>d.data.shift())}
- envChart.data.labels.push(now);
- envChart.data.datasets[0].data.push(temp);
- envChart.data.datasets[1].data.push(gas);
- envChart.data.datasets[2].data.push(pm25);
- envChart.data.datasets[3].data.push(co2);
- envChart.update();
+
+
+/* =====================================================
+   CLEAR EMERGENCY
+===================================================== */
+
+function clearEmergency() {
+
+    emergency = false;
+
+    document.getElementById(
+        "emergency"
+    ).style.display =
+        "none";
+
+    addLog(
+        "Người dùng đã xác nhận xử lý cảnh báo.",
+        "log-warning"
+    );
+
 }
-document.getElementById('btn-speak-ai').addEventListener('click',()=>{
- const text='AuraBot đang theo dõi môi trường. Nhiệt độ hiện tại '+document.getElementById('val-temp').textContent+' độ C, PM2.5 '+document.getElementById('val-pm25').textContent+' microgam trên mét khối.';
- if('speechSynthesis' in window){speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(text))}
- addLog('🤖 [AI] Trợ lý AI đã đọc tình trạng môi trường.')
-});
-document.getElementById('btn-export-excel').addEventListener('click',()=>{
- let csv='Thời gian,Nhiệt độ,Độ ẩm,PM2.5,CO2,Gas\\n';
- envChart.data.labels.forEach((t,i)=>{csv+=`${t},${envChart.data.datasets[0].data[i]??''},,${envChart.data.datasets[2].data[i]??''},${envChart.data.datasets[3].data[i]??''},${envChart.data.datasets[1].data[i]??''}\\n`});
- const blob=new Blob(['\\ufeff'+csv],{type:'text/csv;charset=utf-8;'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='AuraBot_Environment_Report.csv';a.click();URL.revokeObjectURL(a.href);addLog('📊 [REPORT] Đã xuất báo cáo dữ liệu.')}
+
+
+/* =====================================================
+   HEATMAP
+===================================================== */
+
+function updateHeatmap() {
+
+    const kitchen =
+        document.getElementById(
+            "kitchen"
+        );
+
+    const aqiKitchen =
+        document.getElementById(
+            "aqiKitchen"
+        );
+
+
+    if (
+        pm25 > 55 ||
+        co2 > 1000 ||
+        gas > 400
+    ) {
+
+        kitchen.className =
+            "room danger-room";
+
+        aqiKitchen.textContent =
+            "NGUY HIỂM";
+
+    }
+
+    else if (
+        pm25 > 35 ||
+        co2 > 800
+    ) {
+
+        kitchen.className =
+            "room warning-room";
+
+        aqiKitchen.textContent =
+            "CẢNH BÁO";
+
+    }
+
+    else {
+
+        kitchen.className =
+            "room";
+
+        aqiKitchen.textContent =
+            "Tốt";
+
+    }
+
+}
+
+
+/* =====================================================
+   ROBOT ROOM
+===================================================== */
+
+function moveRobot() {
+
+    const rooms = [
+        "living",
+        "bedroom",
+        "kitchen",
+        "office"
+    ];
+
+
+    rooms.forEach(
+        room => {
+
+            const element =
+                document.getElementById(
+                    "robot" +
+                    room.charAt(0).toUpperCase() +
+                    room.slice(1)
+                );
+
+            if (element)
+                element.style.display =
+                    "none";
+
+        }
+    );
+
+
+    const target =
+        document.getElementById(
+            "robot" +
+            robotRoom.charAt(0).toUpperCase() +
+            robotRoom.slice(1)
+        );
+
+
+    if (target)
+        target.style.display =
+            "block";
+
+
+    /*
+       Robot ưu tiên đi tới
+       khu vực có nguy cơ
+    */
+
+    if (gas > 400 ||
+        pm25 > 55 ||
+        co2 > 1000) {
+
+        robotRoom =
+            "kitchen";
+
+    }
+
+    else {
+
+        const random =
+            Math.floor(
+                Math.random() *
+                rooms.length
+            );
+
+        robotRoom =
+            rooms[random];
+
+    }
+
+}
+
+
+/* =====================================================
+   SMART HOME
+===================================================== */
+
+function toggleDevice(element) {
+
+    element.classList.toggle(
+        "active"
+    );
+
+
+    const status =
+        element.querySelector(
+            ".device-status"
+        );
+
+
+    if (
+        element.classList.contains(
+            "active"
+        )
+    ) {
+
+        status.textContent =
+            "ON";
+
+        addLog(
+            "Smart Home: thiết bị đã BẬT."
+        );
+
+    }
+
+    else {
+
+        status.textContent =
+            "OFF";
+
+        addLog(
+            "Smart Home: thiết bị đã TẮT."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   AI VOICE
+===================================================== */
+
+function speakAI() {
+
+    const message =
+        document.getElementById(
+            "aiMessage"
+        ).textContent;
+
+
+    if (
+        "speechSynthesis" in window
+    ) {
+
+        speechSynthesis.cancel();
+
+        const speech =
+            new SpeechSynthesisUtterance(
+                "AuraBot AI thông báo. " +
+                message
+            );
+
+        speech.lang =
+            "vi-VN";
+
+        speech.rate =
+            0.95;
+
+        speechSynthesis.speak(
+            speech
+        );
+
+        addLog(
+            "AI đã đọc báo cáo bằng giọng nói."
+        );
+
+    }
+
+    else {
+
+        alert(
+            "Trình duyệt không hỗ trợ đọc giọng nói."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   EXPORT REPORT
+===================================================== */
+
+function exportReport() {
+
+    const csv =
+        "Thời gian,Nhiệt độ,Độ ẩm,PM2.5,CO2,Gas,Pin\n" +
+
+        new Date().toLocaleString() +
+        "," +
+        temperature +
+        "," +
+        humidity +
+        "," +
+        pm25 +
+        "," +
+        co2 +
+        "," +
+        gas +
+        "," +
+        battery;
+
+
+    const blob =
+        new Blob(
+            ["\ufeff" + csv],
+            {
+                type:
+                    "text/csv;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const link =
+        document.createElement(
+            "a"
+        );
+
+    link.href = url;
+
+    link.download =
+        "AuraBot_Report.csv";
+
+    link.click();
+
+    URL.revokeObjectURL(
+        url
+    );
+
+
+    addLog(
+        "Đã xuất báo cáo môi trường."
+    );
+
+}
+
+
+/* =====================================================
+   START SYSTEM
+===================================================== */
+
+addLog(
+    "🟢 AuraBot AI khởi động thành công."
 );
-addLog('🟢 [SYSTEM] AuraBot AI Smart Environment khởi chạy thành công.');
-runSystemLoop();setInterval(runSystemLoop,3000);
+
+addLog(
+    "Hệ thống cảm biến đang hoạt động."
+);
+
+
+updateBattery();
+
+updateSensors();
+
+
+/*
+   Cập nhật cảm biến
+   mỗi 3 giây
+*/
+
+setInterval(
+    function() {
+
+        updateSensors();
+
+    },
+    3000
+);
+
+
+/*
+   Cập nhật pin
+   mỗi 5 giây
+*/
+
+setInterval(
+    function() {
+
+        updateBatteryLogic();
+
+    },
+    5000
+);
+
 </script>
+
 </body>
 </html>
